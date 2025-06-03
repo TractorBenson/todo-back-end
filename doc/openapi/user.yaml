@@ -1,0 +1,109 @@
+openapi: 3.0.0
+info:
+  title: User API
+  version: 1.0.0
+
+paths:
+  /api/user/register:
+    post:
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - username
+                - email
+                - password
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: User successfully registered
+
+  /api/user/login:
+    post:
+      summary: Log in and retrieve a JWT
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: JWT token
+
+  /api/user/me:
+    post:
+      summary: Get current user info
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: User information
+
+  /api/user/username:
+    post:
+      summary: Update username
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - newUsername
+              properties:
+                newUsername:
+                  type: string
+      responses:
+        '200':
+          description: Username updated
+
+  /api/user/password:
+    post:
+      summary: Update password
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - oldPassword
+                - newPassword
+              properties:
+                oldPassword:
+                  type: string
+                newPassword:
+                  type: string
+      responses:
+        '200':
+          description: Password updated
+
+  /api/user/logout:
+    post:
+      summary: Log out
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Logged out successfully

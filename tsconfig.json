@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist",           // 所有 js 都输出到 dist 文件夹
+    "rootDir": "./src",           // 所有 ts 放在 src 文件夹中
+    "module": "commonjs",
+    "target": "es6",
+    "esModuleInterop": true,
+    "strict": true
+  },
+  "include": ["src/**/*"]
+}
