@@ -1,0 +1,137 @@
+openapi: 3.0.0
+info:
+  title: Task API
+  version: 1.0.0
+
+paths:
+  /api/todo/task/createTask:
+    post:
+      summary: Create a new task
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [user_id, title]
+              properties:
+                user_id:
+                  type: integer
+                title:
+                  type: string
+                description:
+                  type: string
+                due_date:
+                  type: string
+      responses:
+        '200':
+          description: Task created
+        '400':
+          description: Invalid input
+
+  /api/todo/task/getTaskById:
+    post:
+      summary: Get task by ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [id]
+              properties:
+                id:
+                  type: integer
+      responses:
+        '200':
+          description: Task found
+        '404':
+          description: Task not found
+
+  /api/todo/task/getTasksByUser:
+    post:
+      summary: Get tasks by user ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [userId]
+              properties:
+                userId:
+                  type: integer
+                completed:
+                  type: boolean
+                limit:
+                  type: integer
+                offset:
+                  type: integer
+      responses:
+        '200':
+          description: List of tasks
+        '400':
+          description: Invalid input
+
+  /api/todo/task/deleteTask:
+    post:
+      summary: Delete a task
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [id]
+              properties:
+                id:
+                  type: integer
+      responses:
+        '200':
+          description: Task deleted
+        '404':
+          description: Task not found
+
+  /api/todo/task/updateTask:
+    post:
+      summary: Update a task
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [id]
+              properties:
+                id:
+                  type: integer
+                title:
+                  type: string
+                due_date:
+                  type: string
+                description:
+                  type: string
+      responses:
+        '200':
+          description: Task updated
+        '404':
+          description: Task not found
+
+  /api/todo/task/toggleTaskCompletion:
+    post:
+      summary: Toggle task completion status
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [id]
+              properties:
+                id:
+                  type: integer
+      responses:
+        '200':
+          description: Task toggled
+        '404':
+          description: Task not found

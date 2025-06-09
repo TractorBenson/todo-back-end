@@ -4,7 +4,7 @@ info:
   version: 1.0.0
 
 paths:
-  /api/user/register:
+  /api/todo/user/register:
     post:
       summary: Register a new user
       requestBody:
@@ -20,13 +20,42 @@ paths:
               properties:
                 username:
                   type: string
+                email:
+                  type: string
                 password:
                   type: string
       responses:
         '200':
           description: User successfully registered
+        '400':
+          description: Missing required fields
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '409':
+          description: User already exists
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
 
-  /api/user/login:
+  /api/todo/user/login:
     post:
       summary: Log in and retrieve a JWT
       requestBody:
@@ -39,15 +68,42 @@ paths:
                 - email
                 - password
               properties:
-                username:
+                email:
                   type: string
                 password:
                   type: string
       responses:
         '200':
           description: JWT token
+        '400':
+          description: Missing required fields
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
 
-  /api/user/me:
+  /api/todo/user/me:
     post:
       summary: Get current user info
       security:
@@ -55,8 +111,26 @@ paths:
       responses:
         '200':
           description: User information
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
 
-  /api/user/username:
+  /api/todo/user/username:
     post:
       summary: Update username
       security:
@@ -75,8 +149,44 @@ paths:
       responses:
         '200':
           description: Username updated
+        '400':
+          description: Missing required fields
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '409':
+          description: Username already taken
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
 
-  /api/user/password:
+  /api/todo/user/password:
     post:
       summary: Update password
       security:
@@ -98,8 +208,35 @@ paths:
       responses:
         '200':
           description: Password updated
+        '400':
+          description: Missing required fields
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '401':
+          description: Unauthorized or invalid old password
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
 
-  /api/user/logout:
+  /api/todo/user/logout:
     post:
       summary: Log out
       security:
@@ -107,3 +244,21 @@ paths:
       responses:
         '200':
           description: Logged out successfully
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string

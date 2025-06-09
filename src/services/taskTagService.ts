@@ -11,7 +11,7 @@ export class TaskTagService {
     TaskTagModel.removeTagFromTask(task_id, tag_id);
   }
 
-  static getTagsForTask(task_id: number): string[] {
+  static getTagsForTask(task_id: number): Tag[] {
     return TaskTagModel.getTagsForTask(task_id);
   }
 }

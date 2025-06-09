@@ -3,61 +3,69 @@ import { Request, Response } from 'express';
 import { TaskService } from '../services/taskService';
 
 export class TaskController {
-  static createTask(req: Request, res: Response): void {
+  static async createTask(req: Request, res: Response): Promise<void> {
     const { user_id, title, due_date, description } = req.body;
     try {
-      const task = TaskService.createTask(user_id, title, due_date, description);
+      const task = await TaskService.createTask(user_id, title, due_date, description);
       res.status(201).json(task);
-    } catch (err) {
-      res.status(400).json({ error: 'Invalid task data.' });
+    } catch (err: any) {
+      res.status(400).json({ error: err.message || 'Invalid task data.' });
     }
   }
 
-  static getTask(req: Request, res: Response): void {
+  static async getTask(req: Request, res: Response): Promise<void> {
     const id = Number(req.params.id);
-    const task = TaskService.getTask(id);
-    if (task) {
+    try {
+      const task = await TaskService.getTask(id);
       res.json(task);
-    } else {
-      res.status(404).json({ error: 'Task not found.' });
+    } catch (err: any) {
+      res.status(404).json({ error: err.message || 'Task not found.' });
     }
   }
 
-  static getTasksByUser(req: Request, res: Response): void {
+  static async getTasksByUser(req: Request, res: Response): Promise<void> {
     const userId = Number(req.params.userId);
     const { completed, limit, offset } = req.query;
-    const tasks = TaskService.getTasksByUserId(userId, {
-      completed: completed === 'true',
-      limit: limit ? Number(limit) : undefined,
-      offset: offset ? Number(offset) : undefined,
-    });
-    res.json(tasks);
+    try {
+      const tasks = await TaskService.getTasksByUserId(userId, {
+        completed: completed === 'true',
+        limit: limit ? Number(limit) : undefined,
+        offset: offset ? Number(offset) : undefined,
+      });
+      res.json(tasks);
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || 'Failed to fetch tasks.' });
+    }
   }
 
-  static deleteTask(req: Request, res: Response): void {
+  static async deleteTask(req: Request, res: Response): Promise<void> {
     const id = Number(req.params.id);
-    TaskService.deleteTask(id);
-    res.status(204).send();
+    try {
+      await TaskService.deleteTask(id);
+      res.status(204).send();
+    } catch (err: any) {
+      res.status(404).json({ error: err.message || 'Task not found.' });
+    }
   }
 
-  static updateTask(req: Request, res: Response): void {
+  static async updateTask(req: Request, res: Response): Promise<void> {
     const id = Number(req.params.id);
     const { title, due_date, description } = req.body;
     try {
-      const task = TaskService.updateTask(id, { title, due_date, description });
+      const task = await TaskService.updateTask(id, { title, due_date, description });
       res.json(task);
-    } catch (err) {
-      res.status(400).json({ error: 'Failed to update task.' });
+    } catch (err: any) {
+      res.status(404).json({ error: err.message || 'Failed to update task.' });
     }
   }
 
-  static toggleTaskCompletion(req: Request, res: Response): void {
+  static async toggleTaskCompletion(req: Request, res: Response): Promise<void> {
     const id = Number(req.params.id);
     try {
-      const task = TaskService.toggleTaskCompletion(id);
+      const task = await TaskService.toggleTaskCompletion(id);
       res.json(task);
-    } catch (err) {
-      res.status(400).json({ error: 'Failed to toggle task completion.' });
+    } catch (err: any) {
+      res.status(404).json({ error: err.message || 'Failed to toggle task completion.' });
     }
   }
 }

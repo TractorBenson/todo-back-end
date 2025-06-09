@@ -7,8 +7,10 @@ export class TaskService {
     return TaskModel.createTask({ user_id, title, due_date, description });
   }
 
-  static getTask(id: number): Task | undefined {
-    return TaskModel.getTaskById(id);
+  static getTask(id: number): Task {
+    const task = TaskModel.getTaskById(id);
+    if (!task) throw new Error('Task not found');
+    return task;
   }
 
   static getAllTasks(): Task[] {
@@ -23,20 +25,22 @@ export class TaskService {
   }
 
   static deleteTask(id: number): void {
+    const task = TaskModel.getTaskById(id);
+    if (!task) throw new Error('Task not found');
     TaskModel.deleteTask(id);
   }
 
-  static updateTask(id: number, updates: Partial<Omit<Task, 'id' | 'created_at'>>): Task | undefined {
-    return TaskModel.updateTask(id, updates);
+  static updateTask(id: number, updates: Partial<Omit<Task, 'id' | 'created_at'>>): Task {
+    const task = TaskModel.getTaskById(id);
+    if (!task) throw new Error('Task not found');
+    return TaskModel.updateTask(id, updates)!;
   }
 
-  static toggleTaskCompletion(id: number): Task | undefined {
+  static toggleTaskCompletion(id: number): Task {
     const task = TaskModel.getTaskById(id);
-    if (!task) return undefined;
+    if (!task) throw new Error('Task not found');
 
-    const updatedTask = { ...task, completed: !task.completed };
-    return TaskModel.updateTask(id, {
-      completed: updatedTask.completed ? 1 : 0,
-    });
+    const newStatus = task.completed ? 0 : 1;
+    return TaskModel.updateTask(id, { completed: newStatus })!;
   }
 }
