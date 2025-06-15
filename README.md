@@ -1,6 +1,6 @@
 # todo—back-end
 
-> The back-end of the todo: A sample implementation of a todo-list, track things to do and record due date. 
+> The back-end of the todo: A simple implementation of a todo-list, track things to do and record due date. 
 > The client-side files are not finished yet.
 
 ## Features
