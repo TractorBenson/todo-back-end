@@ -24,6 +24,7 @@ export const login = async (req: Request, res: Response) => {
 export const getCurrentUser = (req: Request, res: Response) => {
   const userId = req.user?.id;
   if (typeof userId !== 'number') {
+    console.log(userId);
     res.status(401).json({ error: 'Unauthorized' });
     return;
   }

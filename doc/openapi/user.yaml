@@ -28,15 +28,6 @@ paths:
         '200':
           description: User successfully registered
         '400':
-          description: Missing required fields
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-        '409':
           description: User already exists
           content:
             application/json:
